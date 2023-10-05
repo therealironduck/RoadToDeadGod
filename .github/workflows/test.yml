@@ -95,9 +95,7 @@ jobs:
         run: composer install --prefer-dist --no-progress --no-suggest
 
       - name: Prepare environment
-        run: |
-          - rm -f .env .env.testing
-          - mv .env.ci .env
+        run: rm -f .env .env.testing && mv .env.ci .env
 
       - name: Run Pest
         run: php artisan test --coverage --min=100 -p --coverage-html public/coverage

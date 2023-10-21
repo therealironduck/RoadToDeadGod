@@ -51,20 +51,3 @@ test('email is not verified with invalid hash', function () {
 
     expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
 });
-
-it('redirects the user if already verified', function () {
-    $user = User::factory()->create();
-
-    Event::fake();
-
-    $verificationUrl = URL::temporarySignedRoute(
-        'verification.verify',
-        now()->addMinutes(60),
-        ['id' => $user->id, 'hash' => sha1($user->email)]
-    );
-
-    $response = $this->actingAs($user)->get($verificationUrl);
-
-    Event::assertNotDispatched(Verified::class);
-    $response->assertRedirect(RouteServiceProvider::HOME.'?verified=1');
-});

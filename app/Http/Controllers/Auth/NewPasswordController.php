@@ -48,6 +48,10 @@ class NewPasswordController extends Controller
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             static function ($user) use ($request): void {
+                if (!is_string($request->password)) {
+                    return;
+                }
+
                 $user->forceFill([
                     'password'       => Hash::make($request->password),
                     'remember_token' => Str::random(60),
@@ -64,8 +68,13 @@ class NewPasswordController extends Controller
             return redirect()->route('login')->with('status', __($status));
         }
 
+        $statusString = 'Something went wrong. Please try again.';
+        if (is_string($status)) {
+            $statusString = $status;
+        }
+
         throw ValidationException::withMessages([
-            'email' => [trans($status)],
+            'email' => [trans($statusString)],
         ]);
     }
 }

@@ -26,16 +26,16 @@ help:
 ################
 
 ## Rebuild the whole server
-build: build-composer build-npm build-key build-database
+build: build-composer build-bun build-key build-database
 
 ## Install all composer dependencies
 build-composer:
 	composer install
 
-## Install all npm dependencies
-build-npm:
-	npm ci
-	npm run build
+## Install all bun dependencies and build the frontend
+build-bun:
+	bun install --frozen-lockfile
+	bun run build
 
 ## Generate the application encryption key
 build-key:
@@ -72,7 +72,7 @@ test-pest:
 ## Test for security vulnerabilities
 test-audit:
 	composer audit
-	npm audit
+
 
 ################
 ### Utility  ###

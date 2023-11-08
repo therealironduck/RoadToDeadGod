@@ -8,6 +8,7 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
     ->name('*.php')
     ->notName('*.blade.php')
+    ->notName('_ide_helper_models.php')
     ->ignoreDotFiles(true)
     ->ignoreVCS(true);
 
